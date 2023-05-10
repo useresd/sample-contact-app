@@ -1,9 +1,39 @@
-<td>{{contact?.id}}</td>
-<td>{{contact?.name}}</td>
-<td>{{contact?.phone}}</td>
-<td>{{contact?.address}}</td>
-<td>{{contact?.notes}}</td>
-<td>
-    <button type="button">edit</button>
-    <button type="button">delete</button>
-</td>
+<tr *ngIf="contact" [formGroup]="contactForm">
+    <td>{{contact.id}}</td>
+    <td>
+        <span *ngIf="!editMode">{{contact.name}}</span>
+        <span *ngIf="editMode">
+            <input type="text" formControlName="name"/>
+        </span>
+    </td>
+    <td>
+        <span *ngIf="!editMode">{{contact.phone}}</span>
+        <span *ngIf="editMode">
+            <input type="text" formControlName="phone"/>
+        </span>
+    </td>
+    <td>
+        <span *ngIf="!editMode">{{contact.address}}</span>
+        <span *ngIf="editMode">
+            <input type="text" formControlName="address"/>
+        </span>
+    </td>
+    <td>
+        <span *ngIf="!editMode">{{contact.notes}}</span>
+        <span *ngIf="editMode">
+            <input type="text" formControlName="notes"/>
+        </span>
+    </td>
+    <td>
+        <div *ngIf="!isEditing">
+            <button *ngIf="!editMode" type="button" class="button mr" (click)="setEditMode(true)">edit</button>
+            <button *ngIf="editMode" type="button" class="button mr"  (click)="setEditMode(false)">save</button>
+            <button type="button"  class="button danger--text" (click)="onDelete()">delete</button>
+        </div>
+        <div *ngIf="isEditing" style="color: grey">
+            <i class="material-icons" style="font-size: 1em; margin-right: 5px;">lock</i>
+            <span>being edited</span>
+        </div>
+    </td>
+</tr>
+<app-confirm-dialog *ngIf="isDeleteDialogShown" (close)="onDeleteConfirm($event)"></app-confirm-dialog>

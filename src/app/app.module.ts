@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component'
 import { ContactsListComponent } from './contacts-list/contacts-list.component';
 import { ContactAddDialogComponent } from './contact-add-dialog/contact-add-dialog.component';
 import { ContactsListItemComponent } from './contacts-list-item/contacts-list-item.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { ContactsListItemComponent } from './contacts-list-item/contacts-list-it
     ContactsListComponent,
     ContactAddDialogComponent,
     ContactsListItemComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,

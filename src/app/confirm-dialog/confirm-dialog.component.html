@@ -1,0 +1,12 @@
+<div class="dialog-container">
+    <div class="dialog-content">
+        <h1>
+            {{ title }}
+        </h1>
+        <p>
+            {{ message }}
+        </p>
+        <button type="button" class="button button-primary" (click)="close.emit(true)">Yes</button>
+        <button type="button" class="button" (click)="close.emit(false)">No</button>
+    </div>
+</div>

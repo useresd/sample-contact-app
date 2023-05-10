@@ -1,4 +1,10 @@
-td {
+tr td {
     border-bottom: 1px solid #ddd;
-    padding: 15px;
+    padding: 5px;
+}
+
+input {
+    outline: none;
+    font-size: 1em;
+    padding: 5px;
 }

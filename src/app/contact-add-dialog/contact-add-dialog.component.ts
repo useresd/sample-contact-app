@@ -7,7 +7,6 @@ import { FormBuilder } from "@angular/forms"
   styleUrls: ['./contact-add-dialog.component.css']
 })
 export class ContactAddDialogComponent {
-  @Input() isShown: Boolean = false;
   @Output() close = new EventEmitter();
 
   contactForm = this.formBuilder.group({

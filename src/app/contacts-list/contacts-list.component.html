@@ -9,7 +9,5 @@
             <th>Actions</th>
         </tr>
     </thead>
-    <tbody>
-        <tr app-contacts-list-item *ngFor="let contact of contacts" [contact]="contact"></tr>
-    </tbody>
+    <tbody app-contacts-list-item *ngFor="let contact of contacts" [contact]="contact"></tbody>
 </table>
