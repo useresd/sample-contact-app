@@ -1,0 +1,13 @@
+<div class="dialog-container" [class.shown]="isShown">
+    <div class="dialog-content">
+        <h1>Add New Contact</h1>
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+            <input class="form-input" type="text" id="name" placeholder="Name" formControlName="name" />
+            <input class="form-input" type="text" id="phone" placeholder="Phone" formControlName="phone" />
+            <textarea class="form-input" type="text" id="address" placeholder="Address" rows="3" formControlName="address"></textarea>
+            <textarea class="form-input" type="text" id="address" placeholder="Notes" rows="8" formControlName="notes"></textarea>
+            <button class="button button-primary" type="submit">Submit</button>
+            <a class="button" (click)="close.emit()">close</a>
+        </form>
+    </div>
+</div>

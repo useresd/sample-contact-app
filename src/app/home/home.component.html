@@ -1,0 +1,9 @@
+<div class="container">
+    
+    <a class="button button-primary" (click)="onAddContact()">
+        <i class="material-icons" style="font-size: 1.1em; margin-right: 5px;">person_add</i>
+        Add New Contact
+    </a>
+    <app-contacts-list [contacts]="contacts"></app-contacts-list>
+    <app-contact-add-dialog [isShown]="isAddContactDialogShown" (close)="isAddContactDialogShown = false"></app-contact-add-dialog>
+</div>

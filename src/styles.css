@@ -2,3 +2,28 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+* { box-sizing: border-box; }
+
+.container {
+    padding: 20px;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 10px 0px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.button-primary {
+    background-color: #102e4a;
+    color: white;
+}
+
+.button-primary:hover {
+    background-color: #22486c;
+}
