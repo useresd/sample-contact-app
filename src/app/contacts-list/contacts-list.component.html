@@ -6,15 +6,10 @@
             <th>Phone</th>
             <th>Address</th>
             <th>Notes</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let contact of contacts">
-            <td>{{contact.id}}</td>
-            <td>{{contact.name}}</td>
-            <td>{{contact.phone}}</td>
-            <td>{{contact.address}}</td>
-            <td>{{contact.notes}}</td>
-        </tr>
+        <tr app-contacts-list-item *ngFor="let contact of contacts" [contact]="contact"></tr>
     </tbody>
 </table>

@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component'
 import { ContactsListComponent } from './contacts-list/contacts-list.component';
 import { ContactAddDialogComponent } from './contact-add-dialog/contact-add-dialog.component';
+import { ContactsListItemComponent } from './contacts-list-item/contacts-list-item.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { ContactAddDialogComponent } from './contact-add-dialog/contact-add-dial
     HomeComponent,
     ContactsListComponent,
     ContactAddDialogComponent,
+    ContactsListItemComponent,
   ],
   imports: [
     BrowserModule,
