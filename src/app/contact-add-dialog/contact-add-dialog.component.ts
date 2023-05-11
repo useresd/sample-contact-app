@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder } from "@angular/forms"
 
@@ -7,7 +8,7 @@ import { FormBuilder } from "@angular/forms"
   styleUrls: ['./contact-add-dialog.component.css']
 })
 export class ContactAddDialogComponent {
-  @Output() close = new EventEmitter();
+  @Output() close = new EventEmitter<boolean>();
 
   contactForm = this.formBuilder.group({
     name: '',
@@ -16,12 +17,12 @@ export class ContactAddDialogComponent {
     notes: ''
   });
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private http: HttpClient) {}
 
   onSubmit() {
-      this.contactForm.reset();
-      console.log(this.contactForm.value);
-      this.close.emit();
+    this.http.post<{message: string}>("http://localhost:3000/contacts", this.contactForm.value).subscribe(() => {
+      this.close.emit(true);
+    });
   }
 
 }

@@ -9,5 +9,10 @@
             <th>Actions</th>
         </tr>
     </thead>
-    <tbody app-contacts-list-item *ngFor="let contact of contacts | async" [contact]="contact"></tbody>
+    <tbody
+        app-contacts-list-item
+        *ngFor="let contact of contacts"
+        [contact]="contact"
+        (deleted)="deleted.emit($event)"
+    ></tbody>
 </table>

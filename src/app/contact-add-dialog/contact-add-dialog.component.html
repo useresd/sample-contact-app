@@ -7,7 +7,7 @@
             <textarea class="form-input" type="text" id="address" placeholder="Address" rows="3" formControlName="address"></textarea>
             <textarea class="form-input" type="text" id="address" placeholder="Notes" rows="8" formControlName="notes"></textarea>
             <button class="button button-primary" type="submit">Submit</button>
-            <a class="button" (click)="close.emit()">close</a>
+            <a class="button" (click)="close.emit(false)">close</a>
         </form>
     </div>
 </div>

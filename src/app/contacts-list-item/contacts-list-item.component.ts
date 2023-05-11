@@ -1,6 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Contact } from '../contact';
 import { FormBuilder } from "@angular/forms"
+import { HttpClient } from '@angular/common/http';
+import { ContactsService } from '../contacts.service';
 
 @Component({
   selector: 'tbody[app-contacts-list-item]',
@@ -9,7 +11,8 @@ import { FormBuilder } from "@angular/forms"
 })
 export class ContactsListItemComponent implements OnInit {
 
-  @Input() contact?: Contact;
+  @Input() contact!: Contact;
+  @Output() deleted = new EventEmitter<Contact>();
   editMode: boolean = false;
   isEditing: boolean = false;
   isDeleteDialogShown: boolean = false;
@@ -21,7 +24,7 @@ export class ContactsListItemComponent implements OnInit {
     notes: ''
   });
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private contactsService: ContactsService) { }
 
   setEditMode(val: boolean) {
     this.editMode = val;
@@ -32,8 +35,12 @@ export class ContactsListItemComponent implements OnInit {
   }
 
   onDeleteConfirm(confirmed: boolean) {
-    if(confirmed) {
-      window.alert(`Deleting ${this.contact?.name}...`);
+    console.log(confirmed);
+    if(confirmed && this.contact) {
+      this.contactsService.deleteContact(this.contact._id).subscribe(() => {
+        this.isDeleteDialogShown = false;
+        this.deleted.emit(this.contact);
+      })
     }
     this.isDeleteDialogShown = false;
   }

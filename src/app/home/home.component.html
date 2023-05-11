@@ -4,6 +4,9 @@
         <i class="material-icons" style="font-size: 1.1em; margin-right: 5px;">person_add</i>
         Add New Contact
     </button>
-    <app-contacts-list [contacts]="contacts"></app-contacts-list>
-    <app-contact-add-dialog *ngIf="isAddContactDialogShown" (close)="isAddContactDialogShown = false"></app-contact-add-dialog>
+    <app-contacts-list
+        [contacts]="contacts"
+        (deleted)="onContactDeleted($event)"
+        ></app-contacts-list>
+    <app-contact-add-dialog *ngIf="isAddContactDialogShown" (close)="onCloseAddDialog($event)"></app-contact-add-dialog>
 </div>

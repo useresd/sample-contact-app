@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Contact, contacts } from '../contact';
 import { Observable } from 'rxjs';
 
@@ -8,5 +8,6 @@ import { Observable } from 'rxjs';
   styleUrls: ['./contacts-list.component.css']
 })
 export class ContactsListComponent {
-  @Input() contacts!: Observable<Contact[]>;
+  @Input() contacts!: Contact[];
+  @Output() deleted = new EventEmitter<Contact>();
 }
