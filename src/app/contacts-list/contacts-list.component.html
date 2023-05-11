@@ -1,7 +1,7 @@
 <table>
     <thead>
         <tr>
-            <th>#</th>
+            <!-- <th>#</th> -->
             <th>Name</th>
             <th>Phone</th>
             <th>Address</th>
@@ -9,5 +9,5 @@
             <th>Actions</th>
         </tr>
     </thead>
-    <tbody app-contacts-list-item *ngFor="let contact of contacts" [contact]="contact"></tbody>
+    <tbody app-contacts-list-item *ngFor="let contact of contacts | async" [contact]="contact"></tbody>
 </table>

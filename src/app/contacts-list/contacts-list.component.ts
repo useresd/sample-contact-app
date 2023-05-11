@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Contact, contacts } from '../contact';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-contacts-list',
@@ -7,5 +8,5 @@ import { Contact, contacts } from '../contact';
   styleUrls: ['./contacts-list.component.css']
 })
 export class ContactsListComponent {
-  @Input() contacts?: Contact[];
+  @Input() contacts!: Observable<Contact[]>;
 }
