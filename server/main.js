@@ -2,13 +2,13 @@ const express = require("express");
 const http = require("http");
 const app = express();
 const cors = require("cors");
+const { ObjectId } = require("mongodb");
 
 app.use(express.json());
 app.use(cors());
 
 const client = require("./client");
 
-// a function that connects to mongodb and retreve a collection of contacts
 async function getContacts() {
     try {
         var result = [];
@@ -25,16 +25,10 @@ async function getContacts() {
     }
 }
 
-async function storeContact() {
+async function storeContact(contact) {
     try {
         const database = client.db("contacts-app");
         const contacts = database.collection("contacts");
-        const contact = {
-            name: "Jane Doe",
-            phone: "666-666-6666",
-            address: "123 Fake St",
-            notes: "This is a test note"
-        };
         const result = await contacts.insertOne(contact);
         console.log(`New contact created with the following id: ${result.insertedId}`);
     } catch (error) {
@@ -42,30 +36,28 @@ async function storeContact() {
     }
 }
 
+async function deleteContact(contactId) {
+    try {
+        const database = client.db("contacts-app");
+        const contacts = database.collection("contacts");
+        await contacts.deleteOne({_id: new ObjectId(contactId)});
+    } catch (error) {
+        console.error(error);
+    }
+}
 app.post("/contacts", async (req, res) => {
-    await storeContact();
+    await storeContact(req.body);
     res.json({ message: "Contact stored" });
 });
 
 app.get("/contacts", async (req, res) => {
     const contacts = await getContacts();
     res.json(contacts);
-    // res.json([
-    //     {
-    //         id: "1",
-    //         name: "John Doe",
-    //         phone: "555-555-5555",
-    //         address: "123 Fake St",
-    //         notes: "This is a test note"
-    //     },
-    //     {
-    //         id: "2",
-    //         name: "Jane Doe",
-    //         phone: "555-555-5555",
-    //         address: "123 Fake St",
-    //         notes: "This is a test note"
-    //     },
-    // ])
+});
+
+app.delete("/contacts/:id", async (req, res) => {
+    await deleteContact(req.params.id);
+    res.json({ message: "Contact deleted" });
 });
 
 const server = http.createServer(app);
