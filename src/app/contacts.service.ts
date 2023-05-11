@@ -11,8 +11,12 @@ export class ContactsService {
 
   constructor(private http: HttpClient) { }
 
-  fetchContacts() {
-    return this.http.get<Contact[]>("http://localhost:3000/contacts");
+  fetchContacts(page: number) {
+    return this.http.get<{data: Contact[], totalPages: number}>("http://localhost:3000/contacts", {
+      params: {
+        page
+      }
+    });
   }
 
   deleteContact(contactId: string) {

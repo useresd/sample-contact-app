@@ -9,19 +9,23 @@ app.use(cors());
 
 const client = require("./client");
 
-async function getContacts() {
+async function getContacts(page = 1) {
     try {
-        var result = [];
+        var data = [];
+        const LIMIT = 5;
+        const offset = (page - 1) * LIMIT;
         const database = client.db("contacts-app");
         const contacts = database.collection("contacts");
-        const cursor = contacts.find({});
+        const cursor = contacts.find({}).skip(offset).limit(LIMIT);
+        var total = await contacts.countDocuments({});
+        var totalPages = Math.ceil(total / LIMIT);
         for await (const contact of cursor) {
-            result.push(contact);
+            data.push(contact);
         }
     } catch (error) {
         console.error(error);
     } finally {
-        return result;
+        return {totalPages, data};
     }
 }
 
@@ -62,8 +66,9 @@ app.post("/contacts", async (req, res) => {
 });
 
 app.get("/contacts", async (req, res) => {
-    const contacts = await getContacts();
-    res.json(contacts);
+    const page = req.query.page || 1;
+    const {totalPages, data} = await getContacts(page);
+    res.json({totalPages, data});
 });
 
 app.delete("/contacts/:id", async (req, res) => {

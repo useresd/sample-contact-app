@@ -8,5 +8,11 @@
         (deleted)="onContactDeleted($event)"
         (updated)="onContactUpdated($event)"
         ></app-contacts-list>
+
+    <div style="display: flex; justify-content: flex-end; align-items: center;">
+        <button class="button" type="button" (click)="decrementPage()">previous page</button>
+        <span style="margin: 0 10px;">page {{ page }} of {{ totalPages }}</span>
+        <button class="button" type="button" (click)="incrementPage()">next page</button> 
+    </div>
     <app-contact-add-dialog *ngIf="isAddContactDialogShown" (close)="onCloseAddDialog($event)"></app-contact-add-dialog>
 </div>
