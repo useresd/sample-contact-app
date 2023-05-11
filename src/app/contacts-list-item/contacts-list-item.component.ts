@@ -13,6 +13,7 @@ export class ContactsListItemComponent implements OnInit {
 
   @Input() contact!: Contact;
   @Output() deleted = new EventEmitter<Contact>();
+  @Output() updated = new EventEmitter<Contact>();
   editMode: boolean = false;
   isEditing: boolean = false;
   isDeleteDialogShown: boolean = false;
@@ -35,22 +36,38 @@ export class ContactsListItemComponent implements OnInit {
   }
 
   onDeleteConfirm(confirmed: boolean) {
-    console.log(confirmed);
     if(confirmed && this.contact) {
       this.contactsService.deleteContact(this.contact._id).subscribe(() => {
-        this.isDeleteDialogShown = false;
         this.deleted.emit(this.contact);
       })
     }
     this.isDeleteDialogShown = false;
   }
 
-  ngOnInit(): void {
+  onEditSubmit() {
+    if(this.contact) {
+      this.contactsService.updateContact(this.contact._id, this.contactForm.value).subscribe(() => {
+        this.updated.emit(this.contact);
+      });
+    }
+    this.editMode = false;
+  }
+
+  onEditCancel() {
+    this.editMode = false;
+    this.resetEditForm();
+  }
+
+  resetEditForm() {
     this.contactForm.setValue({
       name : this.contact?.name || "",
       phone: this.contact?.phone || "",
       address: this.contact?.address || "",
       notes: this.contact?.notes || ""
     })
+  }
+
+  ngOnInit(): void {
+    this.resetEditForm();
   }
 }

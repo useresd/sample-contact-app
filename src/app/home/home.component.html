@@ -1,5 +1,4 @@
 <div class="container">
-    
     <button class="button button-primary my" (click)="onAddContact()">
         <i class="material-icons" style="font-size: 1.1em; margin-right: 5px;">person_add</i>
         Add New Contact
@@ -7,6 +6,7 @@
     <app-contacts-list
         [contacts]="contacts"
         (deleted)="onContactDeleted($event)"
+        (updated)="onContactUpdated($event)"
         ></app-contacts-list>
     <app-contact-add-dialog *ngIf="isAddContactDialogShown" (close)="onCloseAddDialog($event)"></app-contact-add-dialog>
 </div>

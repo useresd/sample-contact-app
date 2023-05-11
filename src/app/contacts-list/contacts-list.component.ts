@@ -10,4 +10,5 @@ import { Observable } from 'rxjs';
 export class ContactsListComponent {
   @Input() contacts!: Contact[];
   @Output() deleted = new EventEmitter<Contact>();
+  @Output() updated = new EventEmitter<Contact>();
 }

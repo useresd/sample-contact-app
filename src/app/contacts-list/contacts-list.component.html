@@ -14,5 +14,6 @@
         *ngFor="let contact of contacts"
         [contact]="contact"
         (deleted)="deleted.emit($event)"
+        (updated)="updated.emit($event)"
     ></tbody>
 </table>

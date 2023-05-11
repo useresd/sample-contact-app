@@ -45,6 +45,17 @@ async function deleteContact(contactId) {
         console.error(error);
     }
 }
+
+async function updateContact(contactId, contactData) {
+    try {
+        const database = client.db("contacts-app");
+        const contacts = database.collection("contacts");
+        await contacts.updateOne({_id: new ObjectId(contactId)}, {$set: contactData});
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 app.post("/contacts", async (req, res) => {
     await storeContact(req.body);
     res.json({ message: "Contact stored" });
@@ -59,6 +70,13 @@ app.delete("/contacts/:id", async (req, res) => {
     await deleteContact(req.params.id);
     res.json({ message: "Contact deleted" });
 });
+
+app.put("/contacts/:id", async (req, res) => {
+    const data = req.body;
+    const contactId = req.params.id;
+    await updateContact(contactId, data);
+    res.json({ message: "Contact updated" })
+})
 
 const server = http.createServer(app);
 server.listen(3000, () => console.log("listening on *:3000"));

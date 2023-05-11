@@ -15,11 +15,11 @@ export class ContactsService {
     return this.http.get<Contact[]>("http://localhost:3000/contacts");
   }
 
-  getContacts() {
-    return this.contacts;
-  }
-
   deleteContact(contactId: string) {
     return this.http.delete(`http://localhost:3000/contacts/${contactId}`);
+  }
+
+  updateContact(contactId: string, contact: any) {
+    return this.http.put(`http://localhost:3000/contacts/${contactId}`, contact);
   }
 }

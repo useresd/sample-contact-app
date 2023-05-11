@@ -29,6 +29,10 @@ export class HomeComponent implements OnInit {
     this.fetchContacts();
   }
 
+  onContactUpdated(contact: Contact) {
+    this.fetchContacts();
+  }
+
   fetchContacts() {
     this.contactsService.fetchContacts().subscribe(contacts => {
       this.contacts = contacts;

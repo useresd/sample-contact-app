@@ -26,9 +26,13 @@
     </td>
     <td>
         <div *ngIf="!isEditing">
+            <!-- action when edit mode is off -->
             <button *ngIf="!editMode" type="button" class="button mr" (click)="setEditMode(true)">edit</button>
-            <button *ngIf="editMode" type="button" class="button mr"  (click)="setEditMode(false)">save</button>
-            <button type="button"  class="button danger--text" (click)="onDelete()">delete</button>
+            <button *ngIf="!editMode" type="button"  class="button danger--text" (click)="onDelete()">delete</button>
+            
+            <!-- actions when edit mode is on -->
+            <button *ngIf="editMode" type="button" class="button mr"  (click)="onEditSubmit()">save</button>
+            <button *ngIf="editMode" type="button" class="button mr"  (click)="onEditCancel()">cancel</button>
         </div>
         <div *ngIf="isEditing" style="color: grey">
             <i class="material-icons" style="font-size: 1em; margin-right: 5px;">lock</i>
