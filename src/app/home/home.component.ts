@@ -71,7 +71,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.contacts[index].isLocked = true;
         }
       }
-      
+
     })
 
     // subscribe for contact edit unlock
