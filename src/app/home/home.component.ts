@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Contact, contacts } from '../contact';
-import { Observable, Subscription, concatAll } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ContactsService } from '../contacts.service';
 import { User } from '../user';
 import { UserService } from '../user.service';
@@ -62,21 +62,25 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.currentUser = this.userService.getUser();
 
     // subscribe for contact edit lock
-    this.editLockSubscription = this.contactsService.contactEditLock$.subscribe(({user, contact}) => {
-      const index = this.contacts.findIndex(each => each._id == contact._id);
-      if(index != -1) {
-        this.contacts[index].isLocked = true;
+    this.editLockSubscription = this.contactsService.onContactLocked().subscribe(({contactId, username}) => {
+      
+      // check if the contact is locked by the current user, if so don't lock it for him
+      if(username != this.currentUser?.username) {
+        const index = this.contacts.findIndex(each => each._id == contactId);
+        if(index != -1) {
+          this.contacts[index].isLocked = true;
+        }
       }
+      
     })
 
     // subscribe for contact edit unlock
-    this.editUnlockSubscription = this.contactsService.contactEditUnlock$.subscribe(contact => {
-      const index = this.contacts.findIndex(each => each._id == contact._id);
+    this.editUnlockSubscription = this.contactsService.onContactUnlocked().subscribe(({contactId}) => {
+      const index = this.contacts.findIndex(each => each._id == contactId);
       if(index != -1) {
         this.contacts[index].isLocked = false;
       }
     })
-
   }
 
   ngOnDestroy(): void {

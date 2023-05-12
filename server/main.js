@@ -3,11 +3,32 @@ const http = require("http");
 const app = express();
 const cors = require("cors");
 const { ObjectId } = require("mongodb");
+const { Server } = require("socket.io")
 
 app.use(express.json());
 app.use(cors());
 
 const client = require("./client");
+
+const httpServer = http.createServer(app);
+
+const io = new Server(httpServer, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST", "PUT"]
+    }
+});
+
+io.on("connection", (socket) => {    
+    
+    socket.on("lock-contact", ({contactId, username}) => {
+        io.emit("contact-locked", {contactId, username});
+    })
+
+    socket.on("unlock-contact", ({contactId}) => {
+        io.emit("contact-unlocked", {contactId});
+    })
+})
 
 async function getContacts(page = 1, filterQuery) {
     try {
@@ -86,5 +107,8 @@ app.put("/contacts/:id", async (req, res) => {
     res.json({ message: "Contact updated" })
 })
 
-const server = http.createServer(app);
-server.listen(3000, () => console.log("listening on *:3000"));
+app.put("/contacts/:id/lock", (req, res) => {
+
+})
+
+httpServer.listen(3000, () => console.log("listening on *:3000"));

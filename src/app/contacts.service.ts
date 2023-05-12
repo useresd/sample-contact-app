@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Contact } from './contact';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs';
 import { User } from './user';
+import { Socket } from 'ngx-socket-io';
 
 @Injectable({
   providedIn: 'root'
@@ -12,20 +12,22 @@ export class ContactsService {
   contacts: Contact[] = [];
   lockedContactsIds: string[] = [];
 
-  constructor(private http: HttpClient) { }
-
-  private contactEditLockSource = new Subject<{contact: Contact, user: User}>();
-  private contactEditUnlockSource = new Subject<Contact>();
-
-  contactEditLock$ = this.contactEditLockSource.asObservable();
-  contactEditUnlock$ = this.contactEditUnlockSource.asObservable();
+  constructor(private http: HttpClient, private socket: Socket) {}
 
   lockContact(contact: Contact, user: User) {
-    this.contactEditLockSource.next({contact, user});
+    this.socket.emit("lock-contact", {contactId: contact._id, username: user.username});
   }
 
   unlockContact(contact: Contact) {
-    this.contactEditUnlockSource.next(contact);
+    this.socket.emit("unlock-contact", {contactId: contact._id});
+  }
+
+  onContactLocked() {
+    return this.socket.fromEvent<{contactId: string, username: string}>("contact-locked");
+  }
+
+  onContactUnlocked() {
+    return this.socket.fromEvent<{contactId: string}>("contact-unlocked");
   }
 
   fetchContacts(page: number, filterQuery: string | undefined | null) {

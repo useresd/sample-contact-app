@@ -3,6 +3,8 @@ import { Contact } from '../contact';
 import { FormBuilder } from "@angular/forms"
 import { HttpClient } from '@angular/common/http';
 import { ContactsService } from '../contacts.service';
+import { User } from '../user';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'tbody[app-contacts-list-item]',
@@ -17,6 +19,7 @@ export class ContactsListItemComponent implements OnInit {
   editMode: boolean = false;
   isEditing: boolean = false;
   isDeleteDialogShown: boolean = false;
+  currentUser!: User | null;
 
   contactForm = this.formBuilder.group({
     name : '',
@@ -25,7 +28,7 @@ export class ContactsListItemComponent implements OnInit {
     notes: ''
   });
 
-  constructor(private formBuilder: FormBuilder, private contactsService: ContactsService) { }
+  constructor(private formBuilder: FormBuilder, private contactsService: ContactsService, private userService: UserService) { }
 
   setEditMode(val: boolean) {
     this.editMode = val;
@@ -44,6 +47,13 @@ export class ContactsListItemComponent implements OnInit {
     this.isDeleteDialogShown = false;
   }
 
+  onEdit() {
+    this.editMode = true;
+    if(this.currentUser) {
+      this.contactsService.lockContact(this.contact, this.currentUser);
+    }
+  }
+
   onEditSubmit() {
     if(this.contact) {
       this.contactsService.updateContact(this.contact._id, this.contactForm.value).subscribe(() => {
@@ -54,6 +64,7 @@ export class ContactsListItemComponent implements OnInit {
   }
 
   onEditCancel() {
+    this.contactsService.unlockContact(this.contact);
     this.editMode = false;
     this.resetEditForm();
   }
@@ -69,5 +80,6 @@ export class ContactsListItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.resetEditForm();
+    this.currentUser = this.userService.getUser();
   }
 }

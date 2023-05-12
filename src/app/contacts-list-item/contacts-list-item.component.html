@@ -27,7 +27,7 @@
     <td>
         <div *ngIf="!contact.isLocked">
             <!-- action when edit mode is off -->
-            <button *ngIf="!editMode" type="button" class="button mr" (click)="setEditMode(true)">edit</button>
+            <button *ngIf="!editMode" type="button" class="button mr" (click)="onEdit()">edit</button>
             <button *ngIf="!editMode" type="button"  class="button danger--text" (click)="onDelete()">delete</button>
             
             <!-- actions when edit mode is on -->
@@ -36,7 +36,7 @@
         </div>
         <div *ngIf="contact.isLocked" style="color: grey" class="my">
             <i class="material-icons" style="font-size: 1em; margin-right: 5px;">lock</i>
-            <span>being edited</span>
+            <span>Locked</span>
         </div>
     </td>
 </tr>

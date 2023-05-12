@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +14,14 @@ import { ContactAddDialogComponent } from './contact-add-dialog/contact-add-dial
 import { ContactsListItemComponent } from './contacts-list-item/contacts-list-item.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { LoginPageComponent } from './login-page/login-page.component';
+
+const config: SocketIoConfig = {
+	url: "http://localhost:3000",
+  options: {
+    autoConnect: true,
+    transports: ['websocket']
+  }
+}
 
 @NgModule({
   declarations: [
@@ -30,7 +39,8 @@ import { LoginPageComponent } from './login-page/login-page.component';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    SocketIoModule.forRoot(config),
   ],
   providers: [],
   bootstrap: [AppComponent]
