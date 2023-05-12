@@ -4,6 +4,7 @@ export interface Contact {
     phone : string;
     address: string;
     notes: string;
+    isLocked: boolean
 }
 
 export const contacts: Contact[] = [];

@@ -9,13 +9,15 @@ app.use(cors());
 
 const client = require("./client");
 
-async function getContacts(page = 1) {
+async function getContacts(page = 1, filterQuery) {
     try {
-        var data = [];
-        const LIMIT = 5;
-        const offset = (page - 1) * LIMIT;
         const database = client.db("contacts-app");
         const contacts = database.collection("contacts");
+
+        var data = [];
+        const LIMIT = 5;
+        const offset = (page - 1) * LIMIT;        
+
         const cursor = contacts.find({}).skip(offset).limit(LIMIT);
         var total = await contacts.countDocuments({});
         var totalPages = Math.ceil(total / LIMIT);
@@ -67,7 +69,8 @@ app.post("/contacts", async (req, res) => {
 
 app.get("/contacts", async (req, res) => {
     const page = req.query.page || 1;
-    const {totalPages, data} = await getContacts(page);
+    const filterQuery = req.query.q || "";
+    const {totalPages, data} = await getContacts(page, filterQuery);
     res.json({totalPages, data});
 });
 
