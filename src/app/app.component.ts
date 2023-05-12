@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { UserService } from './user.service';
+import { Router } from '@angular/router';
+import { User } from './user';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  
   title = 'contacts-app';
+  currentUser!: User | null;
+
+  constructor(private userService: UserService, private router: Router) {}
+
+  onLogout() {
+    this.currentUser = this.userService.clearUser();
+    this.router.navigate(["/login"])
+  }
 }

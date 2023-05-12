@@ -6,15 +6,20 @@ import { User } from './user';
 })
 export class UserService {
 
-  user!: User;
+  user!: User | null;
 
   constructor() { }
 
   getUser() {
-    return new User("user1");
+    return this.user;
   }
 
   setUser(user: User) {
     this.user = user;
+  }
+
+  clearUser() {
+    this.user = null;
+    return this.user;
   }
 }

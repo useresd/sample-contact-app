@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   contacts!: Contact[];
   isAddContactDialogShown: Boolean = false;
-  currentUser!: User;
+  currentUser!: User | null;
   editLockSubscription!: Subscription;
   editUnlockSubscription!: Subscription;
   

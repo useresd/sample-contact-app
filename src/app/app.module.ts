@@ -12,6 +12,7 @@ import { ContactsListComponent } from './contacts-list/contacts-list.component';
 import { ContactAddDialogComponent } from './contact-add-dialog/contact-add-dialog.component';
 import { ContactsListItemComponent } from './contacts-list-item/contacts-list-item.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { LoginPageComponent } from './login-page/login-page.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     ContactAddDialogComponent,
     ContactsListItemComponent,
     ConfirmDialogComponent,
+    LoginPageComponent,
   ],
   imports: [
     BrowserModule,
