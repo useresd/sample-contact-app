@@ -75,9 +75,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
 
     // subscribe for contact edit unlock
-    this.editUnlockSubscription = this.contactsService.onContactUnlocked().subscribe(({contactId}) => {
+    this.editUnlockSubscription = this.contactsService.onContactUnlocked().subscribe(({contactId, contact}) => {
       const index = this.contacts.findIndex(each => each._id == contactId);
       if(index != -1) {
+        this.contacts[index] = contact;
         this.contacts[index].isLocked = false;
       }
     })

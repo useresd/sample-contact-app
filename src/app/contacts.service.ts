@@ -27,7 +27,7 @@ export class ContactsService {
   }
 
   onContactUnlocked() {
-    return this.socket.fromEvent<{contactId: string}>("contact-unlocked");
+    return this.socket.fromEvent<{contactId: string, contact: Contact}>("contact-unlocked");
   }
 
   fetchContacts(page: number, filterQuery: string | undefined | null) {

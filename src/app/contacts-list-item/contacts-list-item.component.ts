@@ -58,6 +58,7 @@ export class ContactsListItemComponent implements OnInit {
     if(this.contact) {
       this.contactsService.updateContact(this.contact._id, this.contactForm.value).subscribe(() => {
         this.updated.emit(this.contact);
+        this.contactsService.unlockContact(this.contact);
       });
     }
     this.editMode = false;

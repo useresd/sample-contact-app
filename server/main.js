@@ -25,10 +25,24 @@ io.on("connection", (socket) => {
         io.emit("contact-locked", {contactId, username});
     })
 
-    socket.on("unlock-contact", ({contactId}) => {
-        io.emit("contact-unlocked", {contactId});
+    socket.on("unlock-contact", async ({contactId}) => {
+        const contact = await getContactbyId(contactId);
+        io.emit("contact-unlocked", {contactId, contact});
     })
 })
+
+async function getContactbyId(contactId) {
+    try {
+        const database = client.db("contacts-app");
+        const contacts = database.collection("contacts");
+
+        const contact = await contacts.findOne({_id: new ObjectId(contactId)});
+        return contact;
+
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 async function getContacts(page = 1, filterQuery) {
     try {
