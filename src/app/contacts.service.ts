@@ -57,7 +57,12 @@ export class ContactsService {
   handleError = (error: HttpErrorResponse) => {
 
     this.loadingService.setLoading(false);
-    window.alert(error.error);
+
+    if(error.status === 0) {
+      window.alert("Error: couldn't access server. Please check your network connection and try again.");
+    } else {
+      window.alert(error.error);
+    }
 
     return throwError(() => new Error('Something bad happened; please try again later.'));
   }
