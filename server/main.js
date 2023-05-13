@@ -3,12 +3,23 @@ const http = require("http");
 const app = express();
 const cors = require("cors");
 const { ObjectId } = require("mongodb");
-const { Server } = require("socket.io")
+const { Server } = require("socket.io");
+const { MongoClient, ServerApiVersion } = require("mongodb");
 
 app.use(express.json());
 app.use(cors());
 
-const client = require("./client");
+require('dotenv').config()
+
+const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_SERVER}/?retryWrites=true&w=majority`;
+
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+});
 
 const httpServer = http.createServer(app);
 
@@ -35,7 +46,6 @@ async function getContactbyId(contactId) {
     try {
         const database = client.db("contacts-app");
         const contacts = database.collection("contacts");
-
         const contact = await contacts.findOne({_id: new ObjectId(contactId)});
         return contact;
 
@@ -120,8 +130,4 @@ app.put("/contacts/:id", async (req, res) => {
     res.json({ message: "Contact updated" })
 })
 
-app.put("/contacts/:id/lock", (req, res) => {
-
-})
-
-httpServer.listen(3000, () => console.log("listening on *:3000"));
+httpServer.listen(process.env.HTTP_PORT, () => console.log(`listening on *:${process.env.HTTP_PORT}`));
