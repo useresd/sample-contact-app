@@ -41,6 +41,11 @@ button {
     color: white;
 }
 
+.button-disabled {
+    background-color: #d3d3d3;
+    color: #888;
+}
+
 .button-primary:hover {
     background-color: #22486c;
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder } from "@angular/forms"
+import { FormBuilder, Validators } from "@angular/forms"
 import { LoadingService } from '../loading.service';
 
 @Component({
@@ -12,8 +12,8 @@ export class ContactAddDialogComponent {
   @Output() close = new EventEmitter<boolean>();
 
   contactForm = this.formBuilder.group({
-    name: '',
-    phone: '',
+    name: ['', Validators.required],
+    phone: ['', [Validators.required, Validators.pattern('^([0-9]*)$')]],
     address: '',
     notes: ''
   });

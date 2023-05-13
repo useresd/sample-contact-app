@@ -10,5 +10,13 @@
     font-size: 1em;
     display: inline-block;
     width: 100%;
+}
+
+.form-control {
     margin-bottom: 15px;
+}
+
+.control-error {
+    color: red;
+    margin-top: 5px;
 }

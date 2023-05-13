@@ -2,11 +2,28 @@
     <div class="dialog-content">
         <h1>Add New Contact</h1>
         <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
-            <input class="form-input" type="text" id="name" placeholder="Name" formControlName="name" />
-            <input class="form-input" type="text" id="phone" placeholder="Phone" formControlName="phone" />
-            <textarea class="form-input" type="text" id="address" placeholder="Address" rows="3" formControlName="address"></textarea>
-            <textarea class="form-input" type="text" id="address" placeholder="Notes" rows="8" formControlName="notes"></textarea>
-            <button class="button button-primary" type="submit">Submit</button>
+            <div class="form-control">
+                <input class="form-input" type="text" id="name" placeholder="Name" formControlName="name" />
+                <div *ngIf="contactForm.controls.name.errors?.['required']" class="control-error">
+                    Name is required
+                </div>
+            </div>
+            <div class="form-control">
+                <input class="form-input" type="text" id="phone" placeholder="Phone" formControlName="phone" />
+                <div *ngIf="contactForm.controls.phone.errors?.['required']" class="control-error">
+                    Phone is required
+                </div>
+                <div *ngIf="contactForm.controls.phone.errors?.['pattern']" class="control-error">
+                    Phone must contain only numbers
+                </div>
+            </div>
+            <div class="form-control">
+                <textarea class="form-input" type="text" id="address" placeholder="Address" rows="3" formControlName="address"></textarea>
+            </div>
+            <div class="form-control">
+                <textarea class="form-input" type="text" id="address" placeholder="Notes" rows="8" formControlName="notes"></textarea>
+            </div>
+            <button class="button button-primary" [class.button-disabled]="!contactForm.valid" type="submit" [disabled]="!contactForm.valid">Submit</button>
             <a class="button" (click)="close.emit(false)">close</a>
         </form>
     </div>
