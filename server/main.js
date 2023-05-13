@@ -43,91 +43,90 @@ io.on("connection", (socket) => {
 })
 
 async function getContactbyId(contactId) {
-    try {
-        const database = client.db("contacts-app");
-        const contacts = database.collection("contacts");
-        const contact = await contacts.findOne({_id: new ObjectId(contactId)});
-        return contact;
-
-    } catch (error) {
-        console.error(error);
-    }
+    const database = client.db("contacts-app");
+    const contacts = database.collection("contacts");
+    const contact = await contacts.findOne({_id: new ObjectId(contactId)});
+    return contact;
 }
 
 async function getContacts(page = 1, {name, phone, address, notes}) {
-    try {
-        const database = client.db("contacts-app");
-        const contacts = database.collection("contacts");
+    const database = client.db("contacts-app");
+    const contacts = database.collection("contacts");
 
-        var data = [];
-        const LIMIT = 5;
-        const offset = (page - 1) * LIMIT;        
+    var data = [];
+    const LIMIT = 5;
+    const offset = (page - 1) * LIMIT;        
 
-        const cursor = contacts.find({name: {$regex: name}, phone: {$regex: phone}, address: {$regex: address}, notes: {$regex: notes}}).skip(offset).limit(LIMIT);
-        var total = await contacts.countDocuments({});
-        var totalPages = Math.ceil(total / LIMIT);
-        for await (const contact of cursor) {
-            data.push(contact);
-        }
-    } catch (error) {
-        console.error(error);
-    } finally {
-        return {totalPages, data};
+    const cursor = contacts.find({name: {$regex: name}, phone: {$regex: phone}, address: {$regex: address}, notes: {$regex: notes}}).skip(offset).limit(LIMIT);
+    var total = await contacts.countDocuments({});
+    var totalPages = Math.ceil(total / LIMIT);
+    for await (const contact of cursor) {
+        data.push(contact);
     }
+    return {totalPages, data};
 }
 
 async function storeContact(contact) {
-    try {
-        const database = client.db("contacts-app");
-        const contacts = database.collection("contacts");
-        const result = await contacts.insertOne(contact);
-    } catch (error) {
-        console.error(error);
-    }
+    const database = client.db("contacts-app");
+    const contacts = database.collection("contacts");
+    const result = await contacts.insertOne(contact);
 }
 
 async function deleteContact(contactId) {
-    try {
-        const database = client.db("contacts-app");
-        const contacts = database.collection("contacts");
-        await contacts.deleteOne({_id: new ObjectId(contactId)});
-    } catch (error) {
-        console.error(error);
-    }
+    const database = client.db("contacts-app");
+    const contacts = database.collection("contacts");
+    await contacts.deleteOne({_id: new ObjectId(contactId)});
 }
 
 async function updateContact(contactId, contactData) {
-    try {
-        const database = client.db("contacts-app");
-        const contacts = database.collection("contacts");
-        await contacts.updateOne({_id: new ObjectId(contactId)}, {$set: contactData});
-    } catch (error) {
-        console.error(error);
-    }
+    const database = client.db("contacts-app");
+    const contacts = database.collection("contacts");
+    await contacts.updateOne({_id: new ObjectId(contactId)}, {$set: contactData});
 }
 
-app.post("/contacts", async (req, res) => {
-    await storeContact(req.body);
-    res.json({ message: "Contact stored" });
+app.post("/contacts", async (req, res, next) => {
+    try {
+        await storeContact(req.body);
+        res.json({ message: "Contact stored" });
+    } catch(error) {
+        next(error);
+    }
 });
 
-app.get("/contacts", async (req, res) => {
-    const page = req.query.page || 1;
-    const {name, phone, address, notes} = req.query;
-    const {totalPages, data} = await getContacts(page, {name, phone, address, notes});
-    res.json({totalPages, data});
+app.get("/contacts", async (req, res, next) => {
+    try {
+        const page = req.query.page || 1;
+        const {name, phone, address, notes} = req.query;
+        const {totalPages, data} = await getContacts(page, {name, phone, address, notes});
+        res.json({totalPages, data});
+    } catch (error) {
+        next(error)
+    }
 });
 
-app.delete("/contacts/:id", async (req, res) => {
-    await deleteContact(req.params.id);
-    res.json({ message: "Contact deleted" });
+app.delete("/contacts/:id", async (req, res, next) => {
+    try {
+        await deleteContact(req.params.id);
+        res.json({ message: "Contact deleted" });
+    } catch(error) {
+        next(error);
+    }
 });
 
-app.put("/contacts/:id", async (req, res) => {
-    const data = req.body;
-    const contactId = req.params.id;
-    await updateContact(contactId, data);
-    res.json({ message: "Contact updated" })
+app.put("/contacts/:id", async (req, res, next) => {
+    try {
+        const data = req.body;
+        const contactId = req.params.id;
+        await updateContact(contactId, data);
+        res.json({ message: "Contact updated" })
+    } catch(error) {
+        next(error)
+    }
+})
+
+app.use((error, req, res, next) => {
+    console.log(error);
+    res.status(500).send(`Error: ${error.message}`);
 })
 
 httpServer.listen(process.env.HTTP_PORT, () => console.log(`listening on *:${process.env.HTTP_PORT}`));

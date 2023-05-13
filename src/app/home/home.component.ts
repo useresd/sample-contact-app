@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Contact, contacts } from '../contact';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, catchError } from 'rxjs';
 import { ContactsService } from '../contacts.service';
 import { User } from '../user';
 import { UserService } from '../user.service';
@@ -66,7 +66,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.loadingService.setLoading(true);
 
-    this.contactsService.fetchContacts(this.page, filterForm).subscribe(result => {
+    this.contactsService.fetchContacts(this.page, filterForm).pipe(
+      
+    ).subscribe(result => {
       this.contacts = result.data;
       this.totalPages = result.totalPages;
       this.loadingService.setLoading(false);
