@@ -44,7 +44,7 @@ async function getContactbyId(contactId) {
     }
 }
 
-async function getContacts(page = 1, filterQuery) {
+async function getContacts(page = 1, {name, phone, address, notes}) {
     try {
         const database = client.db("contacts-app");
         const contacts = database.collection("contacts");
@@ -53,7 +53,7 @@ async function getContacts(page = 1, filterQuery) {
         const LIMIT = 5;
         const offset = (page - 1) * LIMIT;        
 
-        const cursor = contacts.find({}).skip(offset).limit(LIMIT);
+        const cursor = contacts.find({name: {$regex: name}, phone: {$regex: phone}, address: {$regex: address}, notes: {$regex: notes}}).skip(offset).limit(LIMIT);
         var total = await contacts.countDocuments({});
         var totalPages = Math.ceil(total / LIMIT);
         for await (const contact of cursor) {
@@ -71,7 +71,6 @@ async function storeContact(contact) {
         const database = client.db("contacts-app");
         const contacts = database.collection("contacts");
         const result = await contacts.insertOne(contact);
-        console.log(`New contact created with the following id: ${result.insertedId}`);
     } catch (error) {
         console.error(error);
     }
@@ -104,8 +103,8 @@ app.post("/contacts", async (req, res) => {
 
 app.get("/contacts", async (req, res) => {
     const page = req.query.page || 1;
-    const filterQuery = req.query.q || "";
-    const {totalPages, data} = await getContacts(page, filterQuery);
+    const {name, phone, address, notes} = req.query;
+    const {totalPages, data} = await getContacts(page, {name, phone, address, notes});
     res.json({totalPages, data});
 });
 

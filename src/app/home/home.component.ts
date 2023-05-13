@@ -5,6 +5,7 @@ import { ContactsService } from '../contacts.service';
 import { User } from '../user';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   totalPages: number = 0;
   
   // filtering
-  filterQuery!: string;
+  filterForm = new FormGroup({
+    name: new FormControl(""),
+    phone: new FormControl(""),
+    address: new FormControl(""),
+    notes: new FormControl("")
+  })
 
   constructor(private contactsService: ContactsService, private userService: UserService, private router: Router) {}
 
@@ -48,7 +54,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   fetchContacts() {
-    this.contactsService.fetchContacts(this.page, this.filterQuery).subscribe(result => {
+    const { name , phone, address, notes } = this.filterForm.value;
+
+    const filterForm = {
+      name: name || "",
+      phone: phone || "",
+      address: address || "",
+      notes: notes || ""
+    }
+
+    this.contactsService.fetchContacts(this.page, filterForm).subscribe(result => {
       this.contacts = result.data;
       this.totalPages = result.totalPages;
     });
@@ -110,6 +125,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   onFilterSubmit() {
     this.page = 1;
     this.fetchContacts();
+  }
+
+  onFilterClear() {
+    this.filterForm.reset();
+    this.onFilterSubmit();
   }
 
   onLogout() {

@@ -30,11 +30,11 @@ export class ContactsService {
     return this.socket.fromEvent<{contactId: string, contact: Contact}>("contact-unlocked");
   }
 
-  fetchContacts(page: number, filterQuery: string | undefined | null) {
+  fetchContacts(page: number, filterForm: {name: string, phone: string, address: string, notes: string}) {
     return this.http.get<{data: Contact[], totalPages: number}>("http://localhost:3000/contacts", {
       params: {
         page,
-        q: filterQuery || ""
+        ...filterForm
       }
     });
   }

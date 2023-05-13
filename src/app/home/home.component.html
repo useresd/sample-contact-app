@@ -17,15 +17,34 @@
             <i class="material-icons" style="font-size: 1.1em; margin-right: 5px;">person_add</i>
             Add New Contact
         </button>
-        <div style="display: flex;">
-            <div style="display: flex; align-items: center;" class="search-box mr">
-                <i class="material-icons" style="font-size: 1.1em; margin-right: 5px;">search</i>
-                <input class="search-input" type="text" placeholder="Search" [(ngModel)]="filterQuery">
+    </div>
+    <div>
+        <form [formGroup]="filterForm">
+            <div style="display: flex;">
+                <div style="display: flex; align-items: center;" class="search-box mr">
+                    <i class="material-icons" style="font-size: 1.1em; margin-right: 5px;">search</i>
+                    <input class="search-input" type="text" placeholder="Name" formControlName="name">
+                </div>
+                <div style="display: flex; align-items: center;" class="search-box mr">
+                    <i class="material-icons" style="font-size: 1.1em; margin-right: 5px;">search</i>
+                    <input class="search-input" type="text" placeholder="Phone" formControlName="phone">
+                </div>
+                <div style="display: flex; align-items: center;" class="search-box mr">
+                    <i class="material-icons" style="font-size: 1.1em; margin-right: 5px;">search</i>
+                    <input class="search-input" type="text" placeholder="Address" formControlName="address">
+                </div>
+                <div style="display: flex; align-items: center;" class="search-box mr">
+                    <i class="material-icons" style="font-size: 1.1em; margin-right: 5px;">search</i>
+                    <input class="search-input" type="text" placeholder="Notes" formControlName="notes">
+                </div>
+                <button type="button" class="button button-primary" (click)="onFilterSubmit()">
+                    filter
+                </button>
+                <button type="button" class="button" (click)="onFilterClear()">
+                    clear
+                </button>
             </div>
-            <button type="button" class="button button-primary" (click)="onFilterSubmit()">
-                filter
-            </button>
-        </div>
+        </form>
     </div>
     <app-contacts-list
         [contacts]="contacts"
