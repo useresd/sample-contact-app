@@ -14,9 +14,4 @@ export class AppComponent {
   currentUser!: User | null;
 
   constructor(private userService: UserService, private router: Router) {}
-
-  onLogout() {
-    this.currentUser = this.userService.clearUser();
-    this.router.navigate(["/login"])
-  }
 }

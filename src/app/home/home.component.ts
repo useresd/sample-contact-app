@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ContactsService } from '../contacts.service';
 import { User } from '../user';
 import { UserService } from '../user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -25,7 +26,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   // filtering
   filterQuery!: string;
 
-  constructor(private contactsService: ContactsService, private userService: UserService) {}
+  constructor(private contactsService: ContactsService, private userService: UserService, private router: Router) {}
 
   onAddContact() {
     this.isAddContactDialogShown = true;
@@ -109,6 +110,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   onFilterSubmit() {
     this.page = 1;
     this.fetchContacts();
+  }
+
+  onLogout() {
+    this.currentUser = this.userService.clearUser();
+    this.router.navigate(["/login"])
   }
 
 }

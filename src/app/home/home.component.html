@@ -1,5 +1,17 @@
+<nav>
+    <h1 class="nav-title" style="display: flex; align-items: center;">
+        <i class="material-icons" style="font-size: 1.1em; margin-right: 10px;">import_contacts</i>
+        My Contacts
+    </h1>
+    <div style="display: flex; align-items: center;">
+        <div style="display: flex; align-items: center; font-size: 18px;" class="mr">
+            <i class="material-icons" style="font-size: 1.3em; margin-right: 5px;">account_circle</i>
+            {{currentUser?.username}}
+        </div>
+        <button class="button" (click)="onLogout()">Logout</button>
+    </div>
+</nav>
 <div class="container">
-    {{currentUser | json}}
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <button class="button button-primary my" (click)="onAddContact()">
             <i class="material-icons" style="font-size: 1.1em; margin-right: 5px;">person_add</i>

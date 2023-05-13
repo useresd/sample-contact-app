@@ -20,7 +20,7 @@ export class LoginPageComponent {
 
   onLoginSubmit() {
     const { username, password } = this.loginForm.value;
-    if((username == "user1" && password == "pass1") || (username == "user2" && password == "pass2")) {
+    if((username == "user1" && password == "user1") || (username == "user2" && password == "user2")) {
       this.userService.setUser(new User(username))
       this.router.navigate(["/"]);
       return;
