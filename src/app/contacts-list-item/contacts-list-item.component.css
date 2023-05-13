@@ -4,7 +4,7 @@ tr td {
 }
 
 input {
-    outline: none;
     font-size: 1em;
     padding: 5px;
+    width: 100%;
 }
