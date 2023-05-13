@@ -21,7 +21,10 @@ export class LoginPageComponent {
   onLoginSubmit() {
     const { username, password } = this.loginForm.value;
     if((username == "user1" && password == "user1") || (username == "user2" && password == "user2")) {
-      this.userService.setUser(new User(username))
+      const user = new User(username);
+      this.userService.setUser(user);
+      // temproary store the user in local storage to avoid logout on refresh
+      localStorage.setItem("username", username);
       this.router.navigate(["/"]);
       return;
     }

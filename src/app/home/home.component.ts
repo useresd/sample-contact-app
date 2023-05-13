@@ -114,6 +114,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onLogout() {
     this.currentUser = this.userService.clearUser();
+    localStorage.removeItem("username");
     this.router.navigate(["/login"])
   }
 
