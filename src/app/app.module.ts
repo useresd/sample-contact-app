@@ -14,6 +14,7 @@ import { ContactAddDialogComponent } from './contact-add-dialog/contact-add-dial
 import { ContactsListItemComponent } from './contacts-list-item/contacts-list-item.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { LoginPageComponent } from './login-page/login-page.component';
+import { LoadingOverlayComponent } from './loading-overlay/loading-overlay.component';
 
 const config: SocketIoConfig = {
 	url: "http://localhost:3000",
@@ -32,6 +33,7 @@ const config: SocketIoConfig = {
     ContactsListItemComponent,
     ConfirmDialogComponent,
     LoginPageComponent,
+    LoadingOverlayComponent,
   ],
   imports: [
     BrowserModule,

@@ -6,6 +6,7 @@ import { User } from '../user';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
+import { LoadingService } from '../loading.service';
 
 @Component({
   selector: 'app-home',
@@ -32,7 +33,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     notes: new FormControl("")
   })
 
-  constructor(private contactsService: ContactsService, private userService: UserService, private router: Router) {}
+  constructor(private contactsService: ContactsService, private userService: UserService, private router: Router, private loadingService: LoadingService) {}
 
   onAddContact() {
     this.isAddContactDialogShown = true;
@@ -63,9 +64,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       notes: notes || ""
     }
 
+    this.loadingService.setLoading(true);
+
     this.contactsService.fetchContacts(this.page, filterForm).subscribe(result => {
       this.contacts = result.data;
       this.totalPages = result.totalPages;
+      this.loadingService.setLoading(false);
     });
   }
 

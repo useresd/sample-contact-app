@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ContactsService } from '../contacts.service';
 import { User } from '../user';
 import { UserService } from '../user.service';
+import { LoadingService } from '../loading.service';
 
 @Component({
   selector: 'tbody[app-contacts-list-item]',
@@ -28,7 +29,7 @@ export class ContactsListItemComponent implements OnInit {
     notes: ''
   });
 
-  constructor(private formBuilder: FormBuilder, private contactsService: ContactsService, private userService: UserService) { }
+  constructor(private formBuilder: FormBuilder, private contactsService: ContactsService, private userService: UserService, private loadingService: LoadingService) { }
 
   setEditMode(val: boolean) {
     this.editMode = val;
@@ -40,8 +41,10 @@ export class ContactsListItemComponent implements OnInit {
 
   onDeleteConfirm(confirmed: boolean) {
     if(confirmed && this.contact) {
+      this.loadingService.setLoading(true);
       this.contactsService.deleteContact(this.contact._id).subscribe(() => {
         this.deleted.emit(this.contact);
+        this.loadingService.setLoading(false);
       })
     }
     this.isDeleteDialogShown = false;
@@ -56,9 +59,11 @@ export class ContactsListItemComponent implements OnInit {
 
   onEditSubmit() {
     if(this.contact) {
+      this.loadingService.setLoading(true);
       this.contactsService.updateContact(this.contact._id, this.contactForm.value).subscribe(() => {
         this.updated.emit(this.contact);
         this.contactsService.unlockContact(this.contact);
+        this.loadingService.setLoading(false);
       });
     }
     this.editMode = false;
