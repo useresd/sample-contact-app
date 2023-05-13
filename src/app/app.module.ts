@@ -15,9 +15,10 @@ import { ContactsListItemComponent } from './contacts-list-item/contacts-list-it
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { LoadingOverlayComponent } from './loading-overlay/loading-overlay.component';
+import { environment } from 'src/environments/environment';
 
 const config: SocketIoConfig = {
-	url: "http://localhost:3000",
+	url: environment.apiURL,
   options: {
     autoConnect: true,
     transports: ['websocket']

@@ -3,6 +3,7 @@ import { Contact } from './contact';
 import { HttpClient } from '@angular/common/http';
 import { User } from './user';
 import { Socket } from 'ngx-socket-io';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,7 @@ export class ContactsService {
   }
 
   fetchContacts(page: number, filterForm: {name: string, phone: string, address: string, notes: string}) {
-    return this.http.get<{data: Contact[], totalPages: number}>("http://localhost:3000/contacts", {
+    return this.http.get<{data: Contact[], totalPages: number}>(`${environment.apiURL}/contacts`, {
       params: {
         page,
         ...filterForm
@@ -40,11 +41,15 @@ export class ContactsService {
   }
 
   deleteContact(contactId: string) {
-    return this.http.delete(`http://localhost:3000/contacts/${contactId}`);
+    return this.http.delete(`${environment.apiURL}/contacts/${contactId}`);
+  }
+
+  storeContact(data: any) {
+    return this.http.post<{message: string}>(`${environment.apiURL}/contacts`, data);
   }
 
   updateContact(contactId: string, contact: any) {
-    return this.http.put(`http://localhost:3000/contacts/${contactId}`, contact);
+    return this.http.put(`${environment.apiURL}/contacts/${contactId}`, contact);
   }
 
 }
