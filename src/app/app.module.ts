@@ -21,8 +21,7 @@ const config: SocketIoConfig = {
 	url: environment.apiURL,
   options: {
     autoConnect: true,
-    transports: ['websocket'],
-    auth: {token: "123"}
+    transports: ['websocket']
   }
 }
 

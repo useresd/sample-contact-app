@@ -16,7 +16,7 @@ module.exports = (req, res, next) => {
         /**
          * @type string
          */
-        const authorization = req.headers["authorizaiton"];
+        const authorization = req.headers["authorization"];
 
         if(!authorization) {
             throw new UnauthorizedError("missing authorization token header");

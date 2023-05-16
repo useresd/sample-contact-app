@@ -49,21 +49,33 @@ export class ContactsService {
         ...filterForm
       },
       headers: {
-        "Authorizaiton": `Bearer ${this.authService.getToken()}`
+        "Authorization": `Bearer ${this.authService.getToken()}`
       }
     }).pipe(catchError(this.errorHandler()));
   }
 
   deleteContact(contactId: string) {
-    return this.http.delete(`${environment.apiURL}/contacts/${contactId}`).pipe(catchError(this.errorHandler()));
+    return this.http.delete(`${environment.apiURL}/contacts/${contactId}`, {
+      headers: {
+        "Authorization": `Bearer ${this.authService.getToken()}`
+      }
+    }).pipe(catchError(this.errorHandler()));
   }
 
   storeContact(data: any) {
-    return this.http.post<{message: string}>(`${environment.apiURL}/contacts`, data).pipe(catchError(this.errorHandler()));
+    return this.http.post<{message: string}>(`${environment.apiURL}/contacts`, data, {
+      headers: {
+        "Authorization": `Bearer ${this.authService.getToken()}`
+      }
+    }).pipe(catchError(this.errorHandler()));
   }
 
   updateContact(contactId: string, contact: any) {
-    return this.http.put(`${environment.apiURL}/contacts/${contactId}`, contact).pipe(catchError(this.errorHandler()));
+    return this.http.put(`${environment.apiURL}/contacts/${contactId}`, contact, {
+      headers: {
+        "Authorization": `Bearer ${this.authService.getToken()}`
+      }
+    }).pipe(catchError(this.errorHandler()));
   }
 
   errorHandler() {
