@@ -1,8 +1,10 @@
-
 const express = require("express");
 const r = express.Router();
+const authenticateMiddleware = require("./../middlewares/authenticate.middleware");
 
 const contactController = require("./../controllers/contact.controller");
+
+r.use(authenticateMiddleware);
 
 // contacts
 r.post("/contacts", contactController.store);

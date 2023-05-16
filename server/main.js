@@ -3,10 +3,12 @@ const http = require("http");
 const app = express();
 const cors = require("cors");
 const { Server } = require("socket.io");
+const jwt = require("jsonwebtoken");
 
 require('dotenv').config();
 
 const defaultRouter = require("./routers/default.router");
+const authRouter = require("./routers/auth.router");
 const contactRepository = require("./repositories/contact.repository");
 const errorsMiddleware = require("./middlewares/errors.middleware");
 
@@ -22,7 +24,12 @@ const io = new Server(httpServer, {
     }
 });
 
-io.on("connection", (socket) => {       
+io.use((socket, next) => {
+    console.log(socket.handshake.auth);
+    next();
+});
+
+io.on("connection", (socket) => {
 
     socket.on("lock-contact", ({contactId, username}) => {
         io.emit("contact-locked", {contactId, username});
@@ -35,7 +42,9 @@ io.on("connection", (socket) => {
     
 })
 
+app.use(authRouter);
 app.use(defaultRouter);
+
 app.use(errorsMiddleware);
 
 httpServer.listen(process.env.HTTP_PORT, () => console.log(`listening on *:${process.env.HTTP_PORT}`));

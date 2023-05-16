@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router'
 import { UserService } from '../user.service';
 import { User } from '../user';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login-page',
@@ -11,7 +12,7 @@ import { User } from '../user';
 })
 export class LoginPageComponent {
 
-  constructor(private router: Router, private userService: UserService){}
+  constructor(private router: Router, private userService: UserService, private authService: AuthService){}
 
   loginForm = new FormGroup({
     username: new FormControl(""),
@@ -19,15 +20,13 @@ export class LoginPageComponent {
   })
 
   onLoginSubmit() {
+    
     const { username, password } = this.loginForm.value;
-    if((username == "user1" && password == "user1") || (username == "user2" && password == "user2")) {
-      const user = new User(username);
-      this.userService.setUser(user);
-      // temproary store the user in local storage to avoid logout on refresh
-      localStorage.setItem("username", username);
+
+    this.authService.login(username || "", password || "").subscribe(({token}) => {
+      this.authService.setToken(token);
+      localStorage.setItem("token", token);
       this.router.navigate(["/"]);
-      return;
-    }
-    window.alert("Please check your username/password");
+    });
   }
 }

@@ -27,9 +27,7 @@ async function get(page = 1, {name, phone, address, notes}) {
     const cursor = contacts.find({name: {$regex: name}, phone: {$regex: phone}, address: {$regex: address}, notes: {$regex: notes}}).skip(offset).limit(LIMIT);
     var total = await contacts.countDocuments({});
     var totalPages = Math.ceil(total / LIMIT);
-    for await (const contact of cursor) {
-        data.push(contact);
-    }
+    data = await cursor.toArray();
     return {totalPages, data};
 }
 

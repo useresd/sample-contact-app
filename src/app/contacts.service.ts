@@ -6,6 +6,9 @@ import { Socket } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
 import { catchError, throwError } from 'rxjs';
 import { LoadingService } from './loading.service';
+import { Router } from '@angular/router';
+import handleError from './handleError';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +18,13 @@ export class ContactsService {
   contacts: Contact[] = [];
   lockedContactsIds: string[] = [];
 
-  constructor(private http: HttpClient, private socket: Socket, private loadingService: LoadingService) {}
+  constructor(
+    private http: HttpClient, 
+    private socket: Socket, 
+    private loadingService: LoadingService, 
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   lockContact(contact: Contact, user: User) {
     this.socket.emit("lock-contact", {contactId: contact._id, username: user.username});
@@ -38,32 +47,26 @@ export class ContactsService {
       params: {
         page,
         ...filterForm
+      },
+      headers: {
+        "Authorizaiton": `Bearer ${this.authService.getToken()}`
       }
-    }).pipe(catchError(this.handleError));
+    }).pipe(catchError(this.errorHandler()));
   }
 
   deleteContact(contactId: string) {
-    return this.http.delete(`${environment.apiURL}/contacts/${contactId}`).pipe(catchError(this.handleError));
+    return this.http.delete(`${environment.apiURL}/contacts/${contactId}`).pipe(catchError(this.errorHandler()));
   }
 
   storeContact(data: any) {
-    return this.http.post<{message: string}>(`${environment.apiURL}/contacts`, data).pipe(catchError(this.handleError));
+    return this.http.post<{message: string}>(`${environment.apiURL}/contacts`, data).pipe(catchError(this.errorHandler()));
   }
 
   updateContact(contactId: string, contact: any) {
-    return this.http.put(`${environment.apiURL}/contacts/${contactId}`, contact).pipe(catchError(this.handleError));
+    return this.http.put(`${environment.apiURL}/contacts/${contactId}`, contact).pipe(catchError(this.errorHandler()));
   }
 
-  handleError = (error: HttpErrorResponse) => {
-
-    this.loadingService.setLoading(false);
-
-    if(error.status === 0) {
-      window.alert("Error: couldn't access server. Please check your network connection and try again.");
-    } else {
-      window.alert(error.error);
-    }
-
-    return throwError(() => new Error('Something bad happened; please try again later.'));
+  errorHandler() {
+    return handleError(this.loadingService, this.router);
   }
 }

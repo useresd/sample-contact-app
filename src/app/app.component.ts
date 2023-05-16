@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { User } from './user';
 import { LoadingService } from './loading.service';
 import { Subscription } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
@@ -17,13 +18,16 @@ export class AppComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   loadingSubscription!: Subscription;
 
-  constructor(private userService: UserService, private router: Router, private loadingSrevice: LoadingService) {}
+  constructor(private userService: UserService, private router: Router, private loadingSrevice: LoadingService, private authService: AuthService) {}
 
   ngOnInit(): void {
-    const username = localStorage.getItem("username");
-    if(username) {
-      this.userService.setUser(new User(username));
+    
+    const token = localStorage.getItem("token");
+    
+    if(token) {
+      this.authService.setToken(token);
     }
+
     this.loadingSubscription = this.loadingSrevice.loading$.subscribe(value => {
       this.loading = value;
     })

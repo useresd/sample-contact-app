@@ -7,6 +7,7 @@ import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { LoadingService } from '../loading.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-home',
@@ -33,7 +34,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     notes: new FormControl("")
   })
 
-  constructor(private contactsService: ContactsService, private userService: UserService, private router: Router, private loadingService: LoadingService) {}
+  constructor(
+    private contactsService: ContactsService, 
+    private userService: UserService, 
+    private router: Router, 
+    private loadingService: LoadingService,
+    private authService: AuthService
+  ) {}
 
   onAddContact() {
     this.isAddContactDialogShown = true;
@@ -139,8 +146,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   onLogout() {
-    this.currentUser = this.userService.clearUser();
-    localStorage.removeItem("username");
+    this.authService.clearToken();
+    localStorage.removeItem("token");
     this.router.navigate(["/login"])
   }
 
