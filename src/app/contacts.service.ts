@@ -4,10 +4,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { User } from './user';
 import { Socket } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
-import { catchError, throwError } from 'rxjs';
-import { LoadingService } from './loading.service';
-import { Router } from '@angular/router';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,10 +15,7 @@ export class ContactsService {
 
   constructor(
     private http: HttpClient, 
-    private socket: Socket, 
-    private loadingService: LoadingService, 
-    private router: Router,
-    private authService: AuthService
+    private socket: Socket
   ) {}
 
   lockContact(contact: Contact, user: User) {

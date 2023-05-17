@@ -1,9 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from "./../environments/environment";
-import { catchError } from 'rxjs';
 import { Router } from '@angular/router';
-import handleError from './handleError';
 import { LoadingService } from './loading.service';
 import { User } from './user';
 import { UserService } from './user.service';
@@ -16,14 +14,12 @@ export class AuthService {
   token!: string | null;
 
   constructor(
-    private http: HttpClient, 
-    private router: Router, 
-    private loadingService: LoadingService, 
+    private http: HttpClient,
     private userService: UserService
   ) { }
 
   login(username: string, password: string) {
-    return this.http.post<{token: string}>(`${environment.apiURL}/login`, {username, password}).pipe(catchError(this.errorHandler()));
+    return this.http.post<{token: string}>(`${environment.apiURL}/login`, {username, password});
   }
 
   clearToken() {
@@ -47,9 +43,5 @@ export class AuthService {
       var user = new User(payload.sub);
       this.userService.setUser(user);
     }
-  }
-
-  errorHandler() {
-    return handleError(this.loadingService, this.router);
   }
 }
