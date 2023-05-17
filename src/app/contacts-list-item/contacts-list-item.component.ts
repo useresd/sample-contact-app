@@ -53,7 +53,7 @@ export class ContactsListItemComponent implements OnInit {
   onEdit() {
     this.editMode = true;
     if(this.currentUser) {
-      this.contactsService.lockContact(this.contact, this.currentUser);
+      this.contactsService.lockContact(this.contact);
     }
   }
 

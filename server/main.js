@@ -11,6 +11,7 @@ const defaultRouter = require("./routers/default.router");
 const authRouter = require("./routers/auth.router");
 const contactRepository = require("./repositories/contact.repository");
 const errorsMiddleware = require("./middlewares/errors.middleware");
+const { verifyToken } = require("./utils/token");
 
 app.use(express.json());
 app.use(cors());
@@ -24,10 +25,27 @@ const io = new Server(httpServer, {
     }
 });
 
+io.use((socket, next) => {
+    try {
+        let auth = socket.handshake.auth;
+        const {  sub: username } = verifyToken(auth?.token.trim());
+        socket.data.username = username;
+        next();
+    } catch(error) {
+        next(error);
+    }
+})
+
 io.on("connection", (socket) => {
     
-    socket.on("lock-contact", ({contactId, username}) => {
-        io.emit("contact-locked", {contactId, username});
+    socket.on("lock-contact", async ({contactId}) => {
+
+        const sockets = await io.fetchSockets();
+
+        sockets.filter(each => each.data.username != socket.data.username).forEach(receiver => {
+            receiver.emit("contact-locked", {contactId});
+        })
+    
     });
 
     socket.on("unlock-contact", async ({contactId}) => {

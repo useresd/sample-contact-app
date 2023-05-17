@@ -1,13 +1,6 @@
 const jwt = require("jsonwebtoken");
 const UnauthorizedError = require("./../errors/unauthorized.error");
-
-function verifyToken(token) {
-    try {
-        return jwt.verify(token, process.env.JWT_KEY);
-    } catch(error) {
-        throw new UnauthorizedError(error.message);
-    }
-}
+const { verifyToken } = require("./../utils/token");
 
 module.exports = (req, res, next) => {
     try {

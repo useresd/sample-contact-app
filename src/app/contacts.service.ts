@@ -18,8 +18,8 @@ export class ContactsService {
     private socket: Socket
   ) {}
 
-  lockContact(contact: Contact, user: User) {
-    this.socket.emit("lock-contact", {contactId: contact._id, username: user.username});
+  lockContact(contact: Contact) {
+    this.socket.emit("lock-contact", {contactId: contact._id});
   }
 
   unlockContact(contact: Contact) {
@@ -27,7 +27,7 @@ export class ContactsService {
   }
 
   onContactLocked() {
-    return this.socket.fromEvent<{contactId: string, username: string}>("contact-locked");
+    return this.socket.fromEvent<{contactId: string}>("contact-locked");
   }
 
   onContactUnlocked() {

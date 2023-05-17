@@ -23,6 +23,9 @@ const config: SocketIoConfig = {
   options: {
     autoConnect: true,
     transports: ['websocket'],
+    auth: {
+      token: localStorage.getItem("token")
+    }
   }
 }
 

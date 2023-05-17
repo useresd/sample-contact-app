@@ -91,14 +91,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.currentUser = this.userService.getUser();
 
     // subscribe for contact edit lock
-    this.editLockSubscription = this.contactsService.onContactLocked().subscribe(({contactId, username}) => {
+    this.editLockSubscription = this.contactsService.onContactLocked().subscribe(({contactId}) => {
       
       // check if the contact is locked by the current user, if so don't lock it for him
-      if(username != this.currentUser?.username) {
-        const index = this.contacts.findIndex(each => each._id == contactId);
-        if(index != -1) {
-          this.contacts[index].isLocked = true;
-        }
+      const index = this.contacts.findIndex(each => each._id == contactId);
+      if(index != -1) {
+        this.contacts[index].isLocked = true;
       }
 
     })
