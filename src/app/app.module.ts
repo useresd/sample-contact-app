@@ -16,12 +16,13 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import { LoginPageComponent } from './login-page/login-page.component';
 import { LoadingOverlayComponent } from './loading-overlay/loading-overlay.component';
 import { environment } from 'src/environments/environment';
+import { HttpInterceptorProviders } from './http-interceptors';
 
 const config: SocketIoConfig = {
 	url: environment.apiURL,
   options: {
     autoConnect: true,
-    transports: ['websocket']
+    transports: ['websocket'],
   }
 }
 
@@ -45,7 +46,9 @@ const config: SocketIoConfig = {
     HttpClientModule,
     SocketIoModule.forRoot(config),
   ],
-  providers: [],
+  providers: [
+    HttpInterceptorProviders
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

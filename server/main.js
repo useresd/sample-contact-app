@@ -25,7 +25,7 @@ const io = new Server(httpServer, {
 });
 
 io.on("connection", (socket) => {
-
+    
     socket.on("lock-contact", ({contactId, username}) => {
         io.emit("contact-locked", {contactId, username});
     });

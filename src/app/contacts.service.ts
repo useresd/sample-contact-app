@@ -7,7 +7,6 @@ import { environment } from 'src/environments/environment';
 import { catchError, throwError } from 'rxjs';
 import { LoadingService } from './loading.service';
 import { Router } from '@angular/router';
-import handleError from './handleError';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -48,37 +47,18 @@ export class ContactsService {
         page,
         ...filterForm
       },
-      headers: {
-        "Authorization": `Bearer ${this.authService.getToken()}`
-      }
-    }).pipe(catchError(this.errorHandler()));
+    });
   }
 
   deleteContact(contactId: string) {
-    return this.http.delete(`${environment.apiURL}/contacts/${contactId}`, {
-      headers: {
-        "Authorization": `Bearer ${this.authService.getToken()}`
-      }
-    }).pipe(catchError(this.errorHandler()));
+    return this.http.delete(`${environment.apiURL}/contacts/${contactId}`);
   }
 
   storeContact(data: any) {
-    return this.http.post<{message: string}>(`${environment.apiURL}/contacts`, data, {
-      headers: {
-        "Authorization": `Bearer ${this.authService.getToken()}`
-      }
-    }).pipe(catchError(this.errorHandler()));
+    return this.http.post<{message: string}>(`${environment.apiURL}/contacts`, data);
   }
 
   updateContact(contactId: string, contact: any) {
-    return this.http.put(`${environment.apiURL}/contacts/${contactId}`, contact, {
-      headers: {
-        "Authorization": `Bearer ${this.authService.getToken()}`
-      }
-    }).pipe(catchError(this.errorHandler()));
-  }
-
-  errorHandler() {
-    return handleError(this.loadingService, this.router);
+    return this.http.put(`${environment.apiURL}/contacts/${contactId}`, contact);
   }
 }
